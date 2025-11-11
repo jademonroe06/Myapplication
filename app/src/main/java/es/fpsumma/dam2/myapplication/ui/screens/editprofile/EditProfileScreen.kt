@@ -33,15 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import es.fpsumma.dam2.myapplication.ui.screens.viewmodel.UserProfileViewModel
-
-data class UserProfile(
-    val fullName: String,
-    val profession: String,
-    val email: String,
-    val phone: String,
-    val location: String,
-    val academicFormation: String
-)
+import androidx.compose.runtime.State
+import es.fpsumma.dam2.myapplication.ui.screens.editprofile.UserProfile
 
 // --- Composable Principal (EditProfileScreen) ---
 

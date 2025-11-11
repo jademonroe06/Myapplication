@@ -40,17 +40,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import es.fpsumma.dam2.myapplication.ui.navigation.Routes
 import es.fpsumma.dam2.myapplication.ui.screens.viewmodel.UserProfileViewModel
-
-// 1. DATA CLASS AND PLACEHOLDER ROUTES
-
-data class UserProfile(
-    val fullName: String,
-    val profession: String,
-    val email: String,
-    val phone: String,
-    val location: String,
-    val academicFormation: String
-)
+import es.fpsumma.dam2.myapplication.ui.screens.editprofile.UserProfile
 
 sealed class Screen(val route: String) {
     object EditProfile : Screen("edit_profile_route")
