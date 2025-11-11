@@ -14,7 +14,9 @@ fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(Routes.HOME) { HomeScreen(navController) }
         composable(Routes.PROFILE) { ViewProfileScreen(navController) }
-        composable(Routes.EDIT_PROFILE) { EditProfileScreen(navController) }
+        composable(Routes.EDIT_PROFILE){ EditProfileScreen(navController = navController) }
     }
 }
+
+
 

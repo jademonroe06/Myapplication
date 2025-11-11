@@ -9,9 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults // Necesario para ButtonDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,21 +19,20 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults // Necesario para TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue // Importar para 'by remember'
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue // Importar para 'by remember'
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import es.fpsumma.dam2.myapplication.ui.screens.viewmodel.UserProfileViewModel
 
 data class UserProfile(
     val fullName: String,
@@ -50,10 +48,11 @@ data class UserProfile(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
-    navController: NavHostController,
-    initialUser: UserProfile,
-    onSave: (UserProfile) -> Unit)
-{
+    navController: NavController,
+    viewModel: UserProfileViewModel = viewModel()
+){
+    // Obtener los datos iniciales del ViewModel
+    val initialUser = viewModel.userProfile.value
     // Estados mutables para los campos de edición
     var fullName by remember { mutableStateOf(initialUser.fullName) }
     var profession by remember { mutableStateOf(initialUser.profession) }
@@ -110,7 +109,7 @@ fun EditProfileScreen(
                         location = location,
                         academicFormation = academicFormation
                     )
-                    onSave(updatedUser)
+                    viewModel.saveProfile(updatedUser)
                     navController.popBackStack() // Navegar hacia atrás después de guardar
                 },
                 modifier = Modifier

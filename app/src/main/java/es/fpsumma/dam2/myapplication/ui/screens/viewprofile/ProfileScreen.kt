@@ -35,12 +35,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import es.fpsumma.dam2.myapplication.ui.navigation.Routes
+import es.fpsumma.dam2.myapplication.ui.screens.viewmodel.UserProfileViewModel
 
-// ------------------------------------------
 // 1. DATA CLASS AND PLACEHOLDER ROUTES
-// ------------------------------------------
 
 data class UserProfile(
     val fullName: String,
@@ -55,22 +56,16 @@ sealed class Screen(val route: String) {
     object EditProfile : Screen("edit_profile_route")
 }
 
-// -------------------
 // 2. MAIN COMPOSABLE
-// -------------------
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ViewProfileScreen(navController: NavController) {
+fun ViewProfileScreen(
+    navController: NavController,
+    viewModel: UserProfileViewModel = viewModel()
+) {
+    val userProfile = viewModel.userProfile.value
     // Definición de datos de perfil
-    val userProfile = UserProfile(
-        fullName = "Andrea Fernández García",
-        profession = "Desarrolladora Android",
-        email = "andrea.fg@example.com",
-        phone = "+34 600 123 456",
-        location = "Madrid, España",
-        academicFormation = "DAM2 - Desarrollo de Aplicaciones Multiplataforma"
-    )
 
     // Colores mock para el ejemplo
     val mainButtonColor = Color(0xFF3F51B5)
@@ -142,7 +137,7 @@ fun ViewProfileScreen(navController: NavController) {
         // Botón Editar Perfil
         Button(
             // Uso de la ruta de navegación definida en la clase Screen
-            onClick = { navController.navigate(Screen.EditProfile.route) },
+            onClick = { navController.navigate(Routes.EDIT_PROFILE) },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = mainButtonColor),
             modifier = Modifier
@@ -154,9 +149,8 @@ fun ViewProfileScreen(navController: NavController) {
     }
 }
 
-// --------------------------
+
 // 3. DETAIL ITEM COMPOSABLE
-// --------------------------
 
 @Composable
 fun ProfileDetailItem(icon: ImageVector, label: String, value: String) {
@@ -178,9 +172,7 @@ fun ProfileDetailItem(icon: ImageVector, label: String, value: String) {
     }
 }
 
-// -----------
 // 4. PREVIEW
-// -----------
 
 @Preview(showBackground = true)
 @Composable
@@ -192,3 +184,14 @@ fun ProfileScreenPreview() {
         ViewProfileScreen(navController)
     }
 }
+
+/*
+val userProfile = UserProfile(
+fullName = "Andrea Fernández García",
+profession = "Desarrolladora Android",
+email = "andrea.fg@example.com",
+phone = "+34 600 123 456",
+location = "Madrid, España",
+academicFormation = "DAM2 - Desarrollo de Aplicaciones Multiplataforma"
+    )
+ */

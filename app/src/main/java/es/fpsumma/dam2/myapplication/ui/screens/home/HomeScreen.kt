@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import es.fpsumma.dam2.myapplication.ui.navigation.Routes
 
 // Placeholder for your app's navigation routes to make the code compile
 sealed class Screen(val route: String) {
@@ -80,12 +81,11 @@ fun HomeScreen(navController: NavController) {
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp)) //para que haya un espacio entre la tarjeta y los botones
 
         // Botones de navegación
         Button(
-            // ERROR FIX: Used the placeholder Screen object
-            onClick = { navController.navigate(Screen.Profile.route) },
+            onClick = { navController.navigate(Routes.PROFILE) }, //ruta de navegación
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
@@ -98,8 +98,7 @@ fun HomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            // Ruta actualizada para la configuración
-            onClick = { navController.navigate(Screen.Settings.route) },
+            onClick = { /* navController.navigate(Routes.PROFILE) */ }, //aquí iría la ruta de navegación para la configuración
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
