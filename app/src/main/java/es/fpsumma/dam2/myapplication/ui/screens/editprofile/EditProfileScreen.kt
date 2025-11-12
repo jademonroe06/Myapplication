@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,11 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import es.fpsumma.dam2.myapplication.ui.components.EditField
+import es.fpsumma.dam2.myapplication.ui.screens.viewmodel.UserProfile
 import es.fpsumma.dam2.myapplication.ui.screens.viewmodel.UserProfileViewModel
-import androidx.compose.runtime.State
-import es.fpsumma.dam2.myapplication.ui.screens.editprofile.UserProfile
 
 // --- Composable Principal (EditProfileScreen) ---
 
@@ -42,17 +42,27 @@ import es.fpsumma.dam2.myapplication.ui.screens.editprofile.UserProfile
 @Composable
 fun EditProfileScreen(
     navController: NavController,
-    viewModel: UserProfileViewModel = viewModel()
+    viewModel: UserProfileViewModel
 ){
     // Obtener los datos iniciales del ViewModel
-    val initialUser = viewModel.userProfile.value
+    val userProfileState = viewModel.userProfile.value
     // Estados mutables para los campos de edición
-    var fullName by remember { mutableStateOf(initialUser.fullName) }
-    var profession by remember { mutableStateOf(initialUser.profession) }
-    var email by remember { mutableStateOf(initialUser.email) }
-    var phone by remember { mutableStateOf(initialUser.phone) }
-    var location by remember { mutableStateOf(initialUser.location) }
-    var academicFormation by remember { mutableStateOf(initialUser.academicFormation) }
+    var fullName by remember { mutableStateOf("") }
+    var profession by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("") }
+    var academicFormation by remember { mutableStateOf("") }
+
+    // Sincroniza los estados locales con los datos del ViewModel
+    LaunchedEffect(userProfileState) {
+        fullName = userProfileState.fullName
+        profession = userProfileState.profession
+        email = userProfileState.email
+        phone = userProfileState.phone
+        location = userProfileState.location
+        academicFormation = userProfileState.academicFormation
+    }
 
     Scaffold(
         topBar = {
@@ -60,15 +70,12 @@ fun EditProfileScreen(
                 title = { Text("Editar Perfil") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        // Se quitó el ícono 'automirrored.filled.ArrowBack' que estaba duplicado en los imports
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Atrás")
                     }
                 },
-                //Reemplazo parámetros obsoletos (backgroundColor, contentColor, elevation) por el parámetro 'colors' en M3.
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White,
                     titleContentColor = Color.Black
-                    // La elevación se maneja por defecto con colores planos si no se usa `scrollBehavior`
                 )
             )
         }
@@ -102,16 +109,15 @@ fun EditProfileScreen(
                         location = location,
                         academicFormation = academicFormation
                     )
-                    viewModel.saveProfile(updatedUser)
-                    navController.popBackStack() // Navegar hacia atrás después de guardar
+                    viewModel.saveProfile(updatedUser) // Actualiza el estado compartido
+                    navController.popBackStack() // Regresa a la pantalla de visualización
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.6f) // Adaptar a un ancho similar al de la imagen
+                    .fillMaxWidth(0.6f)
                     .height(48.dp)
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 16.dp),
                 shape = RoundedCornerShape(8.dp),
-                // Reemplazo parámetros obsoletos (backgroundColor) por el parámetro 'colors' en M3.
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5))
             ) {
                 Text("Guardar cambios", color = Color.White)
@@ -122,12 +128,11 @@ fun EditProfileScreen(
 
 // --- Composable de Campo de Edición (EditField) ---
 
-@Composable
+/*@Composable
 fun EditField(label: String, value: String, onValueChange: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             label,
-            // Uso 'labelSmall' o 'bodySmall' como alternativa común para texto secundario.
             style = MaterialTheme.typography.labelSmall,
             color = Color.Gray,
             modifier = Modifier.padding(bottom = 4.dp)
@@ -148,4 +153,4 @@ fun EditField(label: String, value: String, onValueChange: (String) -> Unit) {
         )
         Spacer(modifier = Modifier.height(16.dp))
     }
-}
+}*/

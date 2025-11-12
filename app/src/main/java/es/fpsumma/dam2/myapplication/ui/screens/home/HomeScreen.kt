@@ -25,13 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import es.fpsumma.dam2.myapplication.ui.navigation.Routes
 
-// Placeholder for your app's navigation routes to make the code compile
-sealed class Screen(val route: String) {
-    object Home : Screen("home")
-    object Profile : Screen("profile")
-    object Settings : Screen("settings")
-}
-
 @Composable
 fun HomeScreen(navController: NavController) {
     // Color de ejemplo
@@ -81,24 +74,25 @@ fun HomeScreen(navController: NavController) {
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp)) //para que haya un espacio entre la tarjeta y los botones
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Botones de navegación
         Button(
-            onClick = { navController.navigate(Routes.PROFILE) }, //ruta de navegación
+            onClick = { navController.navigate(Routes.PROFILE) }, // Ruta de navegación a Perfil
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5)) // Azul oscuro
-        ) {                        //color de contenedor
+        ) {
             Text("Ver perfil", color = Color.White)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* navController.navigate(Routes.PROFILE) */ }, //aquí iría la ruta de navegación para la configuración
+            // Podríamos crear una ruta 'SETTINGS' en Routes.kt y usarla aquí:
+            onClick = { /* navController.navigate(Routes.SETTINGS) */ },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),

@@ -21,11 +21,12 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,27 +36,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import es.fpsumma.dam2.myapplication.ui.navigation.Routes
 import es.fpsumma.dam2.myapplication.ui.screens.viewmodel.UserProfileViewModel
-import es.fpsumma.dam2.myapplication.ui.screens.editprofile.UserProfile
 
-sealed class Screen(val route: String) {
-    object EditProfile : Screen("edit_profile_route")
-}
-
-// 2. MAIN COMPOSABLE
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewProfileScreen(
     navController: NavController,
-    viewModel: UserProfileViewModel = viewModel()
+    viewModel: UserProfileViewModel
 ) {
-    val userProfile = viewModel.userProfile.value
-    // Definición de datos de perfil
+    // 1. Lectura del estado compartido (correcta con 'by')
+    val userProfile by viewModel.userProfile
 
     // Colores mock para el ejemplo
     val mainButtonColor = Color(0xFF3F51B5)
@@ -139,9 +131,6 @@ fun ViewProfileScreen(
     }
 }
 
-
-// 3. DETAIL ITEM COMPOSABLE
-
 @Composable
 fun ProfileDetailItem(icon: ImageVector, label: String, value: String) {
     Row(
@@ -162,26 +151,17 @@ fun ProfileDetailItem(icon: ImageVector, label: String, value: String) {
     }
 }
 
-// 4. PREVIEW
-
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
     val navController = rememberNavController()
-    // Uso el tema por defecto de MaterialTheme. Si quieres usar MyApplicationTheme,
-    // Me aseguro de que esté definido e importado correctamente en el proyecto.
+
+    val previewViewModel = remember { UserProfileViewModel() }
+
     MaterialTheme {
-        ViewProfileScreen(navController)
+        ViewProfileScreen(
+            navController = navController,
+            viewModel = previewViewModel // Pasar la instancia de preview
+        )
     }
 }
-
-/*
-val userProfile = UserProfile(
-fullName = "Andrea Fernández García",
-profession = "Desarrolladora Android",
-email = "andrea.fg@example.com",
-phone = "+34 600 123 456",
-location = "Madrid, España",
-academicFormation = "DAM2 - Desarrollo de Aplicaciones Multiplataforma"
-    )
- */
